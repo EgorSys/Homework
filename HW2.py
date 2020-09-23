@@ -19,15 +19,22 @@ def scale(vec, c):
 scaled_vector = scale(vec, 2)
 
 #rotate vector by a given angle
-def make_rot_mtx(angle, dim = 2):
+def make_rot_mtx2(angle):
     sin = math.sin(angle)
     cos = math.cos(angle)
-    if dim == 2:
-        mtx = [[cos, -sin],[sin,cos]]
-        return mtx
-    if dim == 3:
-        print('Sorry, don\'t know how to make that yet')
-        
+    mtx = [[cos, -sin],[sin,cos]]
+    return mtx
+
+def make_rot_mtx3(angle, axes):
+    sin = math.sin(angle)
+    cos = math.cos(angle)
+    if axes == 'x':
+        return [[1,0,0],[0,cos,-sin],[0,sin,cos]]
+    elif axes == 'y':
+        return [[cos,0,sin],[0,1,0],[-sin,0,cos]]
+    elif axes == 'z':
+        return [[1,cos,-sin],[sin,cos,0],[0,0,1]]
+
 def mult_mtxs(A,B):
     X = []
     for row in range(len(A)):
@@ -43,12 +50,19 @@ def mult_mtxs(A,B):
     
 
 
-def rotate(vec, angle):
+def rotate(vec, angle, axes = None):
     vec = [vec[:]]
-    rot_mtx = make_rot_mtx(angle, dim)
+    if not axes:
+        rot_mtx = make_rot_mtx2(angle)
+    elif axes:
+        rot_mtx = make_rot_mtx3(angle, axes)
     new_vector = mult_mtxs(vec, rot_mtx)
     return new_vector
 
-rotated_vector = rotate(vec, 3.14)
+#test
+if dim == 2:
+    rotated_vector = rotate(vec,3.14)
+else:
+    rotated_vector = rotate(vec, 3.14, 'x')
 
 print(rotated_vector)
