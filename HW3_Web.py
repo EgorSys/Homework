@@ -16,7 +16,11 @@ def get_n_links(n, URL):
         for div_element in parsed_page.xpath("//a"):
             new_link = div_element.get("href")
             if not (str(new_link)[0] == '#' or new_link == None):
-                link_arr.append(div_element.get("href"))
+                if not new_link.startswith('https:'):
+                    new_link = 'https://en.wikipedia.org'+new_link
+                    if new_link in set(link_arr):
+                        continue
+                link_arr.append(new_link)
                 n -= 1
             if n <= 0:
                 break
